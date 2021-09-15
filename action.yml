@@ -1,0 +1,25 @@
+name: Slack workflow start/finish messaging
+
+inputs:
+  channel:
+    description: Name or ID of the target Slack channel.
+    required: true
+  field-list:
+    description: |
+      Line feed separated list of custom fields in the format of:
+      Field title|Field value
+      Field with URL|<link title|url>
+    default:
+  result:
+    description: |
+      Message end of workflow result. Expecting one of:
+      - job.status
+      - join(needs.*.result,'|')
+    default:
+  webhook-url:
+    description: Slack incoming webhook URL.
+    required: true
+
+runs:
+  main: ./dist/main.js
+  using: node12
