@@ -16,7 +16,7 @@ jobs:
         uses: flipgroup/action-slack@main
         with:
           channel: '#target-channel'
-          webhook-url: https://hooks.slack.com/services/...
+          webhook-url: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
 
       # -- further job steps --
 
@@ -29,7 +29,7 @@ jobs:
             Custom field 1|Value
             Custom field 2|Value
           result: ${{ job.status }}
-          webhook-url: https://hooks.slack.com/services/...
+          webhook-url: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
 ```
 
 Multiple job workflow:
@@ -44,7 +44,7 @@ jobs:
         uses: flipgroup/action-slack@main
         with:
           channel: '#target-channel'
-          webhook-url: https://hooks.slack.com/services/...
+          webhook-url: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
 
       # -- further job steps --
 
@@ -55,12 +55,14 @@ jobs:
       # -- further job steps --
 
   slack-message:
+    name: Slack message
+    if: always()
+    needs:
+      - first
+      - second
+    runs-on: ubuntu-latest
     steps:
       - name: Slack message finish
-        if: always()
-        needs:
-          - first
-          - second
         uses: flipgroup/action-slack@main
         with:
           channel: '#target-channel'
@@ -68,5 +70,5 @@ jobs:
             Custom field 1|Value
             Custom field 2|Value
           result: ${{ join(needs.*.result,'|') }}
-          webhook-url: https://hooks.slack.com/services/...
+          webhook-url: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
 ```
