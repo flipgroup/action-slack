@@ -36,16 +36,20 @@ Multiple job workflow:
 
 ```yaml
 jobs:
-  first:
-    name: First job
+  slack-message-start:
+    name: Slack message start
     runs-on: ubuntu-latest
     steps:
-      - name: Slack message start
+      - name: Slack message
         uses: flipgroup/action-slack@main
         with:
           channel: '#target-channel'
           webhook-url: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
 
+  first:
+    name: First job
+    runs-on: ubuntu-latest
+    steps:
       # -- further job steps --
 
   second:
@@ -54,15 +58,16 @@ jobs:
     steps:
       # -- further job steps --
 
-  slack-message:
-    name: Slack message
+  slack-message-finish:
+    name: Slack message finish
     if: always()
     needs:
+      - slack-message-start
       - first
       - second
     runs-on: ubuntu-latest
     steps:
-      - name: Slack message finish
+      - name: Slack message
         uses: flipgroup/action-slack@main
         with:
           channel: '#target-channel'
