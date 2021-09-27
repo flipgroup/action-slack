@@ -1,13 +1,13 @@
 {
-	"name": "action-slack",
-	"license": "MIT",
-	"main": "./dist/main.js",
-	"private": true,
-	"dependencies": {
-		"@actions/core": "^1.5.0",
-		"@actions/github": "^5.0.0"
-	},
-	"devDependencies": {
-		"esbuild": "^0.13.2"
-	}
+  "name": "action-slack",
+  "license": "MIT",
+  "main": "./dist/main.js",
+  "private": true,
+  "dependencies": {
+    "@actions/core": "^1.5.0",
+    "@actions/github": "^5.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.13.2"
+  }
 }
