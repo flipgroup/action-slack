@@ -18,4 +18,5 @@ jobs:
         with:
           node-version: 14.x
       - name: Test
-        run: node ./test/*
+        run: |
+          node ./test/lib.test.js
