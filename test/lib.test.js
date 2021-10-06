@@ -6,28 +6,28 @@ const assert = require('assert').strict,
 
 (function testCase_parseArgs() {
   // setup mock functions/data
-  const mockCore = {
-    getInput: function(key) {
-      return mockInputData[key] || '';
-    },
-    getMultilineInput: function(key) {
-      return (mockInputData[key] || '').split('\n');
-    },
-  };
+  const mockInputData = {},
+    mockCore = {
+      getInput: function(key) {
+        return mockInputData[key] || '';
+      },
+      getMultilineInput: function(key) {
+        return (mockInputData[key] || '').split('\n');
+      },
+    };
 
-  const mockInputData = {};
   function mockInputDataReset() {
     Object.assign(mockInputData,{
       'channel': '#slack-channel',
-      'result': '',
       'field-list': '',
+      'result': '',
       'webhook-url': 'https://hooks.slack.com/services/ABCD/EFGH/12345',
     });
   }
   mockInputDataReset();
 
   const mockContext = {
-    actor: 'githubuser',
+    actor: 'github-user',
     eventName: 'push',
     payload: {
       repository: {
@@ -44,7 +44,7 @@ const assert = require('assert').strict,
   assert.deepEqual(
     lib.parseArgs(mockCore,mockContext),
     {
-      actor: 'githubuser',
+      actor: 'github-user',
       branchName: 'main',
       customFieldList: [],
       eventName: 'push',
@@ -63,7 +63,7 @@ const assert = require('assert').strict,
   assert.deepEqual(
     lib.parseArgs(mockCore,mockContext),
     {
-      actor: 'githubuser',
+      actor: 'github-user',
       branchName: 'main',
       customFieldList: [],
       eventName: 'push',
@@ -83,7 +83,7 @@ const assert = require('assert').strict,
   assert.deepEqual(
     lib.parseArgs(mockCore,mockContext),
     {
-      actor: 'githubuser',
+      actor: 'github-user',
       branchName: 'main',
       customFieldList: [],
       eventName: 'push',
@@ -112,7 +112,7 @@ const assert = require('assert').strict,
   assert.deepEqual(
     lib.parseArgs(mockCore,mockContext),
     {
-      actor: 'githubuser',
+      actor: 'github-user',
       branchName: 'feature-branch',
       customFieldList: [],
       eventName: 'pull_request',
@@ -133,28 +133,28 @@ const assert = require('assert').strict,
   mockInputData.channel = '';
   assert.throws(
     () => { lib.parseArgs(mockCore,mockContext); },
-    /^Error: Input Slack channel not set$/
+    /^Error: input Slack channel not set$/
   );
 
   mockInputDataReset();
   mockInputData.result = 'unknown';
   assert.throws(
     () => { lib.parseArgs(mockCore,mockContext); },
-    /^Error: Input result value of \[unknown\] was unexpected$/
+    /^Error: input result value of \[unknown\] was unexpected$/
   );
 
   mockInputDataReset();
   mockInputData['webhook-url'] = '';
   assert.throws(
     () => { lib.parseArgs(mockCore,mockContext); },
-    /^Error: Input Slack Incoming Webhook URL has unexpected format$/
+    /^Error: input Slack Incoming Webhook URL has unexpected format$/
   );
 
   mockInputDataReset();
   mockInputData['webhook-url'] = 'https://invalid.webhook.url.com/foo';
   assert.throws(
     () => { lib.parseArgs(mockCore,mockContext); },
-    /^Error: Input Slack Incoming Webhook URL has unexpected format$/
+    /^Error: input Slack Incoming Webhook URL has unexpected format$/
   );
 })();
 
@@ -190,12 +190,12 @@ const assert = require('assert').strict,
   // test: unknown result values throws error
   assert.throws(
     () => { lib.parseArgsResult('foo'); },
-    /^Error: Input result value of \[foo\] was unexpected$/
+    /^Error: input result value of \[foo\] was unexpected$/
   );
 
   assert.throws(
     () => { lib.parseArgsResult('success|blurg'); },
-    /^Error: Input result value of \[blurg\] was unexpected$/
+    /^Error: input result value of \[blurg\] was unexpected$/
   );
 
   // test: various job result collections and overall result for workflow determined
@@ -214,7 +214,7 @@ const assert = require('assert').strict,
 
 (function testCase_buildSlackPayload() {
   const args = {
-    actor: 'githubuser',
+    actor: 'github-user',
     branchName: 'main',
     customFieldList: [],
     eventName: 'push',
@@ -231,7 +231,7 @@ const assert = require('assert').strict,
     {
       channel: '#test-channel',
       color: '#ffa500',
-      fallback: 'Workflow Example has started',
+      fallback: 'Workflow "Example" has started',
       fields: [
         {
           short: false,
@@ -245,26 +245,16 @@ const assert = require('assert').strict,
         },
         {
           short: true,
-          title: 'Workflow',
-          value: 'Example'
-        },
-        {
-          short: true,
           title: 'Run number',
           value: '<https://github.com/flipgroup/action-slack/actions/runs/1232306257|35>'
         },
         {
           short: true,
           title: 'Triggered by',
-          value: '<https://github.com/githubuser|githubuser>'
+          value: '<https://github.com/github-user|github-user>'
         },
-        {
-          short: true,
-          title: 'Trigger event',
-          value: '`push`'
-        }
       ],
-      pretext: 'Workflow has *started*'
+      pretext: 'Workflow `Example` has *started*'
     }
   );
 
@@ -275,7 +265,7 @@ const assert = require('assert').strict,
     {
       channel: '#test-channel',
       color: '#2eb886',
-      fallback: 'Workflow Example has finished successfully',
+      fallback: 'Workflow "Example" has finished successfully',
       fields: [
         {
           short: false,
@@ -289,26 +279,16 @@ const assert = require('assert').strict,
         },
         {
           short: true,
-          title: 'Workflow',
-          value: 'Example'
-        },
-        {
-          short: true,
           title: 'Run number',
           value: '<https://github.com/flipgroup/action-slack/actions/runs/1232306257|35>'
         },
         {
           short: true,
           title: 'Triggered by',
-          value: '<https://github.com/githubuser|githubuser>'
+          value: '<https://github.com/github-user|github-user>'
         },
-        {
-          short: true,
-          title: 'Trigger event',
-          value: '`push`'
-        }
       ],
-      pretext: 'Workflow has *finished successfully*'
+      pretext: 'Workflow `Example` has *finished successfully*'
     }
   );
 
@@ -320,7 +300,7 @@ const assert = require('assert').strict,
     {
       channel: '#test-channel',
       color: '#2eb886',
-      fallback: 'Workflow Example has finished successfully',
+      fallback: 'Workflow "Example" has finished successfully',
       fields: [
         {
           short: false,
@@ -328,19 +308,9 @@ const assert = require('assert').strict,
           value: '<https://github.com/flipgroup/action-slack|flipgroup/action-slack>'
         },
         {
-          short: false,
-          title: 'Branch',
-          value: '`main`'
-        },
-        {
           title: 'Pull request',
           value: '<https://github.com/flipgroup/action-slack/pull/123|My pull request &lt;&gt;&amp;>',
           short: false
-        },
-        {
-          short: true,
-          title: 'Workflow',
-          value: 'Example'
         },
         {
           short: true,
@@ -350,15 +320,10 @@ const assert = require('assert').strict,
         {
           short: true,
           title: 'Triggered by',
-          value: '<https://github.com/githubuser|githubuser>'
+          value: '<https://github.com/github-user|github-user>'
         },
-        {
-          short: true,
-          title: 'Trigger event',
-          value: '`push`'
-        }
       ],
-      pretext: 'Workflow has *finished successfully*'
+      pretext: 'Workflow `Example` has *finished successfully*'
     }
   );
 })();
