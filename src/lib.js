@@ -115,7 +115,7 @@ function buildSlackPayload(channel,data) {
     return 'started';
   }
 
-  function makeLink(title,url) {
+  function makeSlackLink(title,url) {
     function escape(text) {
       text = ('' + text).replace('&','&amp;');
       text = text.replace('<','&lt;');
@@ -126,29 +126,28 @@ function buildSlackPayload(channel,data) {
     return `<${escape(url)}|${escape(title)}>`;
   }
 
-  const githubRepoUrlBase = 'https://github.com/' + data.repositoryName,
+  const githubRepoUrlBase = `https://github.com/${data.repositoryName}`,
     payload = {
       channel,
       color: SLACK_MESSAGE_COLOR[data.result || 'start'],
-      fallback: `Workflow ${data.workflowName} has ${resultText(data.result)}`,
+      fallback: `Workflow "${data.workflowName}" has ${resultText(data.result)}`,
       fields: [],
-      pretext: `Workflow has *${resultText(data.result)}*`,
+      pretext: `Workflow \`${data.workflowName}\` has *${resultText(data.result)}*`,
     };
 
   function addField(title,value,short) {
     payload.fields.push({ title,value,short: !!short });
   }
 
-  addField('Repository',makeLink(data.repositoryName,githubRepoUrlBase));
-  addField('Branch',`\`${data.branchName}\``);
+  addField('Repository',makeSlackLink(data.repositoryName,githubRepoUrlBase));
   if (data.pullRequestNumber) {
-    addField('Pull request',makeLink(data.pullRequestTitle,`${githubRepoUrlBase}/pull/${data.pullRequestNumber}`));
+    addField('Pull request',makeSlackLink(data.pullRequestTitle,`${githubRepoUrlBase}/pull/${data.pullRequestNumber}`));
+  } else {
+    addField('Branch',`\`${data.branchName}\``);
   }
 
-  addField('Workflow',data.workflowName,true);
-  addField('Run number',makeLink(data.runNumber,`${githubRepoUrlBase}/actions/runs/${data.runId}`),true);
-  addField('Triggered by',makeLink(data.actor,`https://github.com/${data.actor}`),true);
-  addField('Trigger event',`\`${data.eventName}\``,true);
+  addField('Run number',makeSlackLink(data.runNumber,`${githubRepoUrlBase}/actions/runs/${data.runId}`),true);
+  addField('Triggered by',makeSlackLink(data.actor,`https://github.com/${data.actor}`),true);
 
   for (const item of data.customFieldList) {
     addField(item[0],item[1]);
