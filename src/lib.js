@@ -38,7 +38,7 @@ function parseArgs(core,context) {
   // input: Slack channel
   data.slackChannel = core.getInput('channel');
   if (data.slackChannel == '') {
-    throw new Error('Input Slack channel not set');
+    throw new Error('input Slack channel not set');
   }
 
   // input: custom field list
@@ -50,7 +50,7 @@ function parseArgs(core,context) {
   // input: Slack incoming webhook URL
   data.slackWebhookUrl = core.getInput('webhook-url');
   if (!data.slackWebhookUrl.startsWith('https://hooks.slack.com/services/')) {
-    throw new Error('Input Slack Incoming Webhook URL has unexpected format');
+    throw new Error('input Slack Incoming Webhook URL has unexpected format');
   }
 
   return data;
@@ -79,7 +79,7 @@ function parseArgsResult(result) {
   for (const item of result.split('|')) {
     // confirm result value is valid
     if (!['success','failure','cancelled','skipped'].includes(item)) {
-      throw new Error(`Input result value of [${item}] was unexpected`);
+      throw new Error(`input result value of [${item}] was unexpected`);
     }
 
     if (item == 'failure') {
@@ -170,7 +170,7 @@ function sendSlackMessage(webhookUrl,payload) {
         function(resp) {
           if (resp.statusCode != 200) {
             // unable to post message
-            reject(new Error('Failure posting message to Slack'));
+            reject(new Error('failure posting message to Slack'));
           }
 
           resolve();
