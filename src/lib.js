@@ -22,7 +22,7 @@ function parseArgs(core,context) {
     runId: context.runId,
     runNumber: context.runNumber,
     // strip leading file path when workflow name not set
-    workflowName: context.workflow.replace(/^.github\/workflows\//,''),
+    workflowName: context.workflow.replace(/^\.github\/workflows\//,''),
   };
 
   // determine branch name
