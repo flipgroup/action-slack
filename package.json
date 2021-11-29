@@ -8,6 +8,6 @@
     "@actions/github": "^5.0.0"
   },
   "devDependencies": {
-    "esbuild": "^0.13.2"
+    "esbuild": "^0.14.0"
   }
 }
