@@ -1,5 +1,7 @@
 # Action Slack
 
+[![Test](https://github.com/flipgroup/action-slack/actions/workflows/test.yml/badge.svg)](https://github.com/flipgroup/action-slack/actions/workflows/test.yml)
+
 GitHub Action for sending Slack messages at the start and/or end of a Workflow run.
 
 ## Usage
