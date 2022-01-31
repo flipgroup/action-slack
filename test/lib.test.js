@@ -1,6 +1,6 @@
 'use strict';
 
-const assert = require('assert').strict,
+const assert = require('assert/strict'),
   lib = require('./../src/lib.js');
 
 
