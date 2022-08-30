@@ -10,6 +10,9 @@ inputs:
       Field title|Field value
       Field with URL|<link title|url>
     default:
+  repository:
+    description: GitHub repository. In the form `owner-name/repository-name`.
+    default: ${{ github.repository }}
   result:
     description: |
       Message end of workflow result. Expecting one of:

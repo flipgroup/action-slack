@@ -15,23 +15,24 @@ function parseArgs(core,context) {
   // extract base context data
   const data = {
     actor: context.actor,
-    // drop leading 'refs/heads/' text
-    branchName: context.ref.replace(/^refs\/heads\//,''),
     eventName: context.eventName,
-    repositoryName: context.payload.repository.full_name,
+    githubServerUrl: context.serverUrl,
+    refData: parseArgsRef(context.ref),
     runId: context.runId,
     runNumber: context.runNumber,
     // strip leading file path when workflow name not set
     workflowName: context.workflow.replace(/^\.github\/workflows\//,''),
   };
 
-  // determine branch name
   if (context.eventName == 'pull_request') {
     // for a pull request, extract branch name from payload - and grab number/title
     const prData = context.payload.pull_request;
-    data.branchName = prData.head.ref;
     data.pullRequestNumber = prData.number;
     data.pullRequestTitle = prData.title;
+    data.refData = {
+      isTag: false,
+      name: prData.head.ref,
+    };
   }
 
   // get inputs to action
@@ -44,6 +45,12 @@ function parseArgs(core,context) {
   // input: custom field list
   data.customFieldList = parseArgsCustomFieldList(core.getMultilineInput('field-list'));
 
+  // input: repository matches the format `owner-name/repository-name`
+  data.repositoryName = core.getInput('repository');
+  if (!/^[^/ ]+\/[^/ ]+$/.test(data.repositoryName)) {
+    throw new Error('input GitHub repository has unexpected format');
+  }
+
   // input: job result(s)
   data.result = parseArgsResult(core.getInput('result'));
 
@@ -54,6 +61,20 @@ function parseArgs(core,context) {
   }
 
   return data;
+}
+
+function parseArgsRef(ref) {
+  if (ref.startsWith('refs/tags/')) {
+    return {
+      isTag: true,
+      name: ref.slice(10), // drop `refs/tags/`
+    };
+  }
+
+  return {
+    isTag: false,
+    name: ref.replace(/^refs\/heads\//,''), // drop `refs/heads/`, if exists
+  };
 }
 
 function parseArgsCustomFieldList(fieldList) {
@@ -126,7 +147,8 @@ function buildSlackPayload(channel,data) {
     return `<${escape(url)}|${escape(title)}>`;
   }
 
-  const githubRepoUrlBase = `https://github.com/${data.repositoryName}`,
+  const githubServerUrl = data.githubServerUrl,
+    githubRepoUrlBase = `${githubServerUrl}/${data.repositoryName}`,
     payload = {
       channel,
       color: SLACK_MESSAGE_COLOR[data.result || 'start'],
@@ -143,11 +165,11 @@ function buildSlackPayload(channel,data) {
   if (data.pullRequestNumber) {
     addField('Pull request',makeSlackLink(data.pullRequestTitle,`${githubRepoUrlBase}/pull/${data.pullRequestNumber}`));
   } else {
-    addField('Branch',`\`${data.branchName}\``);
+    addField((data.refData.isTag) ? 'Tag' : 'Branch',`\`${data.refData.name}\``);
   }
 
   addField('Run number',makeSlackLink(data.runNumber,`${githubRepoUrlBase}/actions/runs/${data.runId}`),true);
-  addField('Triggered by',makeSlackLink(data.actor,`https://github.com/${data.actor}`),true);
+  addField('Triggered by',makeSlackLink(data.actor,`${githubServerUrl}/${data.actor}`),true);
 
   for (const item of data.customFieldList) {
     addField(item[0],item[1]);
