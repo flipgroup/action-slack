@@ -18,11 +18,12 @@ async function main() {
   // build message payload
   const payload = lib.buildSlackPayload(args.slackChannel,{
     actor: args.actor,
-    branchName: args.branchName,
     customFieldList: args.customFieldList,
     eventName: args.eventName,
+    githubServerUrl: args.githubServerUrl,
     pullRequestNumber: args.pullRequestNumber,
     pullRequestTitle: args.pullRequestTitle,
+    refData: args.refData,
     repositoryName: args.repositoryName,
     result: args.result,
     runId: args.runId,
