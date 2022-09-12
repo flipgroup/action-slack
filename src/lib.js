@@ -24,7 +24,7 @@ function parseArgs(core,context) {
     workflowName: context.workflow.replace(/^\.github\/workflows\//,''),
   };
 
-  if (context.eventName == 'pull_request') {
+  if (context.eventName === 'pull_request') {
     // for a pull request, extract branch name from payload - and grab number/title
     const prData = context.payload.pull_request;
     data.pullRequestNumber = prData.number;
@@ -38,7 +38,7 @@ function parseArgs(core,context) {
   // get inputs to action
   // input: Slack channel
   data.slackChannel = core.getInput('channel');
-  if (data.slackChannel == '') {
+  if (data.slackChannel === '') {
     throw new Error('input Slack channel not set');
   }
 
@@ -92,7 +92,7 @@ function parseArgsCustomFieldList(fieldList) {
 }
 
 function parseArgsResult(result) {
-  if (result == '') {
+  if (result === '') {
     return '';
   }
 
@@ -103,12 +103,12 @@ function parseArgsResult(result) {
       throw new Error(`input result value of [${item}] was unexpected`);
     }
 
-    if (item == 'failure') {
+    if (item === 'failure') {
       // any job fails - overall failure
       return item;
     }
 
-    if (item == 'cancelled') {
+    if (item === 'cancelled') {
       // any job cancelled - overall result _might_ be cancelled (unless something failed)
       finalResult = item;
     }
@@ -121,15 +121,15 @@ function parseArgsResult(result) {
 
 function buildSlackPayload(channel,data) {
   function resultText(result) {
-    if (result == 'success') {
+    if (result === 'success') {
       return 'finished successfully';
     }
 
-    if (result == 'failure') {
+    if (result === 'failure') {
       return 'failed';
     }
 
-    if (result == 'cancelled') {
+    if (result === 'cancelled') {
       return 'been cancelled';
     }
 
@@ -189,7 +189,7 @@ function sendSlackMessage(webhookUrl,payload) {
           path: wh.pathname,
         },
         function(resp) {
-          if (resp.statusCode != 200) {
+          if (resp.statusCode !== 200) {
             // unable to post message
             reject(new Error('failure posting message to Slack'));
           }

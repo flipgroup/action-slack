@@ -219,7 +219,7 @@ const assert = require('assert/strict'),
     [
       ['title','value'],
       ['title2','value2'],
-      ['title3','value3']
+      ['title3','value3'],
     ]
   );
 })();
