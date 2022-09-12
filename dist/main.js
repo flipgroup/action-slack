@@ -26,7 +26,7 @@ var require_lib = __commonJS({
         runNumber: context.runNumber,
         workflowName: context.workflow.replace(/^\.github\/workflows\//, "")
       };
-      if (context.eventName == "pull_request") {
+      if (context.eventName === "pull_request") {
         const prData = context.payload.pull_request;
         data.pullRequestNumber = prData.number;
         data.pullRequestTitle = prData.title;
@@ -36,7 +36,7 @@ var require_lib = __commonJS({
         };
       }
       data.slackChannel = core2.getInput("channel");
-      if (data.slackChannel == "") {
+      if (data.slackChannel === "") {
         throw new Error("input Slack channel not set");
       }
       data.customFieldList = parseArgsCustomFieldList(core2.getMultilineInput("field-list"));
@@ -74,7 +74,7 @@ var require_lib = __commonJS({
       return resultList;
     }
     function parseArgsResult(result) {
-      if (result == "") {
+      if (result === "") {
         return "";
       }
       let finalResult = "success";
@@ -82,10 +82,10 @@ var require_lib = __commonJS({
         if (!["success", "failure", "cancelled", "skipped"].includes(item)) {
           throw new Error(`input result value of [${item}] was unexpected`);
         }
-        if (item == "failure") {
+        if (item === "failure") {
           return item;
         }
-        if (item == "cancelled") {
+        if (item === "cancelled") {
           finalResult = item;
         }
       }
@@ -93,13 +93,13 @@ var require_lib = __commonJS({
     }
     function buildSlackPayload(channel, data) {
       function resultText(result) {
-        if (result == "success") {
+        if (result === "success") {
           return "finished successfully";
         }
-        if (result == "failure") {
+        if (result === "failure") {
           return "failed";
         }
-        if (result == "cancelled") {
+        if (result === "cancelled") {
           return "been cancelled";
         }
         return "started";
@@ -145,7 +145,7 @@ var require_lib = __commonJS({
             path: wh.pathname
           },
           function(resp) {
-            if (resp.statusCode != 200) {
+            if (resp.statusCode !== 200) {
               reject(new Error("failure posting message to Slack"));
             }
             resolve();
