@@ -4,11 +4,11 @@
   "main": "./dist/main.js",
   "private": true,
   "dependencies": {
-    "@actions/core": "^1.9.1",
-    "@actions/github": "^5.0.3"
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1"
   },
   "devDependencies": {
-    "esbuild": "^0.15.5",
-    "eslint": "^8.23.0"
+    "esbuild": "^0.15.10",
+    "eslint": "^8.25.0"
   }
 }
