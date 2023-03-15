@@ -79,3 +79,28 @@ jobs:
           result: ${{ join(needs.*.result,'|') }}
           webhook-url: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
 ```
+
+Message only upon cancelled or failed workflow:
+
+```yaml
+jobs:
+  main:
+    name: Job cancelled or failure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      # -- further job steps --
+
+      - name: Slack message
+        if: (cancelled() || failure()) && (github.ref == 'refs/heads/main')
+        uses: flipgroup/action-slack@main
+        with:
+          channel: '#target-channel'
+          field-list: |
+            Custom field 1|Value
+            Custom field 2|Value
+          result: ${{ job.status }}
+          webhook-url: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
+```
