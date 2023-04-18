@@ -93,7 +93,7 @@ jobs:
 
       # -- further job steps --
 
-      - name: Slack message
+      - name: Slack message failure
         if: (cancelled() || failure()) && (github.ref == 'refs/heads/main')
         uses: flipgroup/action-slack@main
         with:
