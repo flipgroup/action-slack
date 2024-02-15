@@ -5,6 +5,8 @@
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
   "javascript.format.semicolons": "insert",
   "javascript.preferences.quoteStyle": "single",
+  "json.format.enable": true,
+  "json.format.keepLines": true,
   "[javascript][json][jsonc]": {
     "editor.formatOnSave": true,
   },
