@@ -25,4 +25,4 @@ inputs:
 
 runs:
   main: ./dist/main.js
-  using: node16
+  using: node20
