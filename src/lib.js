@@ -1,7 +1,7 @@
 'use strict';
 
-const https = require('https'),
-  url = require('url'),
+const https = require('node:https'),
+  url = require('node:url'),
 
   SLACK_MESSAGE_COLOR = {
     cancelled: '#808080',
