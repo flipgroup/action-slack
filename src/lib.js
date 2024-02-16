@@ -189,6 +189,9 @@ function sendSlackMessage(webhookUrl,payload) {
           path: wh.pathname,
         },
         function(resp) {
+          // throw away response
+          resp.on('data',function() {});
+
           if (resp.statusCode !== 200) {
             // unable to post message
             reject(new Error('failure posting message to Slack'));
