@@ -1,7 +1,7 @@
 'use strict';
 
-const https = require('https'),
-  url = require('url'),
+const https = require('node:https'),
+  url = require('node:url'),
 
   SLACK_MESSAGE_COLOR = {
     cancelled: '#808080',
@@ -189,6 +189,9 @@ function sendSlackMessage(webhookUrl,payload) {
           path: wh.pathname,
         },
         function(resp) {
+          // throw away response
+          resp.on('data',function() {});
+
           if (resp.statusCode !== 200) {
             // unable to post message
             reject(new Error('failure posting message to Slack'));
