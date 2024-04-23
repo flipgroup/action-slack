@@ -19,7 +19,6 @@ async function main() {
   const payload = lib.buildSlackPayload(args.slackChannel,{
     actor: args.actor,
     customFieldList: args.customFieldList,
-    eventName: args.eventName,
     githubServerUrl: args.githubServerUrl,
     pullRequestNumber: args.pullRequestNumber,
     pullRequestTitle: args.pullRequestTitle,

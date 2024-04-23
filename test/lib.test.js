@@ -43,7 +43,6 @@ const assert = require('node:assert/strict'),
     {
       actor: 'github-user',
       customFieldList: [],
-      eventName: 'push',
       githubServerUrl: 'https://github.com',
       refData: {
         isTag: false,
@@ -66,7 +65,6 @@ const assert = require('node:assert/strict'),
     {
       actor: 'github-user',
       customFieldList: [],
-      eventName: 'push',
       githubServerUrl: 'https://github.com',
       refData: {
         isTag: false,
@@ -90,7 +88,6 @@ const assert = require('node:assert/strict'),
     {
       actor: 'github-user',
       customFieldList: [],
-      eventName: 'push',
       githubServerUrl: 'https://github.com',
       refData: {
         isTag: false,
@@ -114,7 +111,6 @@ const assert = require('node:assert/strict'),
     {
       actor: 'github-user',
       customFieldList: [],
-      eventName: 'push',
       githubServerUrl: 'https://github.com',
       refData: {
         isTag: true,
@@ -149,7 +145,6 @@ const assert = require('node:assert/strict'),
     {
       actor: 'github-user',
       customFieldList: [],
-      eventName: 'pull_request',
       githubServerUrl: 'https://github.com',
       refData: {
         isTag: false,
