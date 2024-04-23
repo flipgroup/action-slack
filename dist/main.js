@@ -48,7 +48,6 @@ var require_lib = __commonJS({
     function parseArgs(core2, context) {
       const data = {
         actor: context.actor,
-        eventName: context.eventName,
         githubServerUrl: context.serverUrl,
         refData: parseArgsRef(context.ref),
         runId: context.runId,
@@ -23237,7 +23236,6 @@ async function main() {
   const payload = lib.buildSlackPayload(args.slackChannel, {
     actor: args.actor,
     customFieldList: args.customFieldList,
-    eventName: args.eventName,
     githubServerUrl: args.githubServerUrl,
     pullRequestNumber: args.pullRequestNumber,
     pullRequestTitle: args.pullRequestTitle,
