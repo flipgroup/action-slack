@@ -15,7 +15,6 @@ function parseArgs(core,context) {
   // extract base context data
   const data = {
     actor: context.actor,
-    eventName: context.eventName,
     githubServerUrl: context.serverUrl,
     refData: parseArgsRef(context.ref),
     runId: context.runId,
