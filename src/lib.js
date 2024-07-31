@@ -137,12 +137,11 @@ function buildSlackPayload(channel,data) {
 
   function makeSlackLink(title,url) {
     function escape(text) {
-      text = ('' + text).replace('&','&amp;');
-      text = text.replace('<','&lt;');
-      return text.replace('>','&gt;');
+      text = ('' + text).replaceAll('&','&amp;');
+      text = text.replaceAll('<','&lt;');
+      return text.replaceAll('>','&gt;');
     }
 
-    url = url.replace('<','&lt;');
     return `<${escape(url)}|${escape(title)}>`;
   }
 
