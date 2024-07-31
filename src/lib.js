@@ -142,7 +142,6 @@ function buildSlackPayload(channel,data) {
       return text.replaceAll('>','&gt;');
     }
 
-    url = url.replaceAll('<','&lt;');
     return `<${escape(url)}|${escape(title)}>`;
   }
 
