@@ -10,8 +10,8 @@ async function main() {
   let args = {};
   try {
     args = lib.parseArgs(core,github.context);
-  } catch (ex) {
-    core.setFailed(ex.message);
+  } catch (err) {
+    core.setFailed(err.message);
     return;
   }
 
@@ -33,8 +33,8 @@ async function main() {
   // submit message
   try {
     await lib.sendSlackMessage(args.slackWebhookUrl,payload);
-  } catch (ex) {
-    core.setFailed(ex.message);
+  } catch (err) {
+    core.setFailed(err.message);
     return;
   }
 }
