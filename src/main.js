@@ -7,7 +7,7 @@ const lib = require('./lib.js'),
 
 async function main() {
   // parse/load arguments from context and inputs
-  let args = {};
+  let args;
   try {
     args = lib.parseArgs(core,github.context);
   } catch (err) {
