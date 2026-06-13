@@ -40,7 +40,7 @@ Multiple job workflow:
 jobs:
   slack-message-start:
     name: Slack message start
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Slack message
         uses: flipgroup/action-slack@main
@@ -67,7 +67,7 @@ jobs:
       - slack-message-start
       - first
       - second
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Slack message
         uses: flipgroup/action-slack@main
@@ -88,10 +88,7 @@ jobs:
     name: Job cancelled or failure
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
-
-      # -- further job steps --
+      # -- insert job steps --
 
       - name: Slack message failure
         if: (cancelled() || failure()) && (github.ref == 'refs/heads/main')
