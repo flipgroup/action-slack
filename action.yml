@@ -2,7 +2,7 @@ name: Slack workflow start/finish messaging
 
 inputs:
   channel:
-    description: Name or ID of the target Slack channel.
+    description: Name or ID of target Slack channel.
     required: true
   field-list:
     description: |
@@ -25,4 +25,4 @@ inputs:
 
 runs:
   main: ./dist/main.js
-  using: node20
+  using: node24
