@@ -1,4 +1,5 @@
-name: Slack workflow start/finish messaging
+name: Slack workflow messaging
+description: Slack workflow messaging for start/finish/approval_required messaging
 
 inputs:
   channel:
@@ -18,6 +19,7 @@ inputs:
       Message end of workflow result. Expecting one of:
       - job.status
       - join(needs.*.result,'|')
+      - approval_required
     default:
   webhook-url:
     description: Slack incoming webhook URL.
