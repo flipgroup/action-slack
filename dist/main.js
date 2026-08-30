@@ -15,6 +15,7 @@ var require_lib = __commonJS({
     var https = require("node:https");
     var url = require("node:url");
     var SLACK_MESSAGE_COLOR = {
+      approval_required: "#4a90d9",
       cancelled: "#808080",
       failure: "#a30200",
       start: "#ffa500",
@@ -85,13 +86,16 @@ var require_lib = __commonJS({
       }
       let finalResult = "success";
       for (const item of result.split("|")) {
-        if (!["success", "failure", "cancelled", "skipped"].includes(item)) {
+        if (!["success", "failure", "cancelled", "skipped", "approval_required"].includes(item)) {
           throw new Error(`input result value of [${item}] was unexpected`);
         }
         if (item === "failure") {
           return item;
         }
         if (item === "cancelled") {
+          finalResult = item;
+        }
+        if (item === "approval_required" && finalResult === "success") {
           finalResult = item;
         }
       }
@@ -107,6 +111,9 @@ var require_lib = __commonJS({
         }
         if (result === "cancelled") {
           return "been cancelled";
+        }
+        if (result === "approval_required") {
+          return "approval required";
         }
         return "started";
       }

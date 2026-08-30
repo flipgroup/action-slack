@@ -4,6 +4,7 @@ const https = require('node:https'),
   url = require('node:url'),
 
   SLACK_MESSAGE_COLOR = {
+    approval_required: '#4a90d9',
     cancelled: '#808080',
     failure: '#a30200',
     start: '#ffa500',
@@ -98,7 +99,7 @@ function parseArgsResult(result) {
   let finalResult = 'success';
   for (const item of result.split('|')) {
     // confirm result value is valid
-    if (!['success','failure','cancelled','skipped'].includes(item)) {
+    if (!['success','failure','cancelled','skipped','approval_required'].includes(item)) {
       throw new Error(`input result value of [${item}] was unexpected`);
     }
 
@@ -109,6 +110,10 @@ function parseArgsResult(result) {
 
     if (item === 'cancelled') {
       // any job cancelled - overall result _might_ be cancelled (unless something failed)
+      finalResult = item;
+    }
+
+    if (item === 'approval_required' && finalResult === 'success') {
       finalResult = item;
     }
 
@@ -130,6 +135,10 @@ function buildSlackPayload(channel,data) {
 
     if (result === 'cancelled') {
       return 'been cancelled';
+    }
+
+    if (result === 'approval_required') {
+      return 'approval required';
     }
 
     return 'started';

@@ -2,7 +2,7 @@
 
 [![Test](https://github.com/flipgroup/action-slack/actions/workflows/test.yml/badge.svg)](https://github.com/flipgroup/action-slack/actions/workflows/test.yml)
 
-GitHub Action for sending Slack messages at the start and/or end of a Workflow run.
+GitHub Action for sending Slack messages at the start and/or end of a Workflow run, or when approval is required.
 
 ## Usage
 
@@ -86,7 +86,7 @@ Message only upon cancelled or failed workflow:
 jobs:
   main:
     name: Job cancelled or failure
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       # -- insert job steps --
 
@@ -100,4 +100,24 @@ jobs:
             Custom field 2|Value
           result: ${{ job.status }}
           webhook-url: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
+```
+
+Message when approval is required:
+
+```yaml
+  slack-message-approval:
+    name: Slack message approval
+    runs-on: ubuntu-slim
+    needs:
+      - evaluator
+    if: needs.evaluator.outputs.approval-required == 'true'
+    steps:
+      - name: Slack message approval
+        uses: flipgroup/action-slack@main
+        with:
+          channel: ${{ inputs.slack-channel }}
+          result: approval_required
+          field-list: |
+            Approval required|<@TODO> please review and approve
+          webhook-url: ${{ secrets.GEPPETTO_SLACK_INCOMING_WEBHOOK_URL }}
 ```
